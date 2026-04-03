@@ -17,22 +17,29 @@ mov dl, [BOOT_DRIVE]
 
 call load_disk
 
-call load_pm
+mov bx, NORMAL_MODE_MSG
+call print_string
 
+call load_pm
 jmp $
 
-[bits 32]
-begin_pm:
-
-
 %include "print_string.asm"
+%include "print_string_pm.asm"
 %include "print_hex.asm"
 %include "load_disk.asm"
 %include "gdt.asm"
-%include "load_pm"
+%include "load_pm.asm"
+
+[bits 32]
+begin_pm:
+    mov ebx, PROTECTED_MODE_MSG
+    call print_string_pm
+    jmp $
 
 ; Variables
 BOOT_DRIVE: db 0x00
+NORMAL_MODE_MSG: db "Started in 16-bit mode", 0
+PROTECTED_MODE_MSG: db "NOW IN 32-BIT PM!", 0
 
 ; the padding for bootloader
 times 510 - ($-$$) db 0

@@ -1,3 +1,4 @@
+[bits 16]
 ; helper function to print a string, with string address in bx register beforehand
 print_string:
     pusha ; push all registers to stack before messing with them

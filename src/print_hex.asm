@@ -1,3 +1,4 @@
+[bits 16]
 ;helper function to print hex number passed into dx register
 print_hex:
     pusha

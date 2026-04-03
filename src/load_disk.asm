@@ -1,3 +1,4 @@
+[bits 16]
 load_disk:
     push dx
 

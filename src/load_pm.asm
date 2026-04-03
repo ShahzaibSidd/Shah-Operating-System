@@ -1,5 +1,4 @@
 [bits 16]
-
 ; loading into protected mode
 load_pm:
     cli
