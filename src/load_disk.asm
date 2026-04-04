@@ -1,3 +1,7 @@
+; load memory from disk, where input is:
+; dh: how many sectors to load
+; dl: which boot drive
+; bx: which address to write memory to 
 [bits 16]
 load_disk:
     push dx
