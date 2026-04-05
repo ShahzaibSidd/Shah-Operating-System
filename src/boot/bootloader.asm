@@ -23,12 +23,12 @@ call load_pm
 
 jmp $
 
-%include "print_string.asm"
-%include "print_hex.asm"
-%include "load_disk.asm"
-%include "pm/print_string_pm.asm"
-%include "pm/gdt.asm"
-%include "pm/load_pm.asm"
+%include "boot/print_string.asm"
+%include "boot/print_hex.asm"
+%include "boot/load_disk.asm"
+%include "boot/pm/print_string_pm.asm"
+%include "boot/pm/gdt.asm"
+%include "boot/pm/load_pm.asm"
 
 [bits 16]
 load_kernel:

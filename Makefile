@@ -22,22 +22,28 @@ else
 LD := ld
 endif
 
+C_SOURCES := $(wildcard src/kernel/*.c src/drivers/*.c)
+OBJ := $(addprefix build/, $(notdir $(C_SOURCES:.c=.o)))
+
 all: bin/os.bin
-	qemu-system-x86_64 -drive format=raw,file=bin/os.bin
+	qemu-system-x86_64 -drive format=raw,file=$<
 
 bin/os.bin: bin/bootloader.bin bin/kernel.bin
-	dd if=/dev/zero of=bin/os.bin bs=512 count=2880
-	dd if=bin/bootloader.bin of=bin/os.bin conv=notrunc
-	dd if=bin/kernel.bin of=bin/os.bin bs=512 seek=1 conv=notrunc
+	dd if=/dev/zero of=$@ bs=512 count=2880
+	dd if=bin/bootloader.bin of=$@ conv=notrunc
+	dd if=bin/kernel.bin of=$@ bs=512 seek=1 conv=notrunc
 
-bin/bootloader.bin: src/bootloader.asm
-	$(NASM) -f bin -I src/ src/bootloader.asm -o bin/bootloader.bin
+bin/bootloader.bin: src/boot/bootloader.asm
+	$(NASM) -f bin -I src/ $< -o $@
 
-bin/kernel.bin: src/kernel/kernel.c src/kernel/enter_kernel.asm
-	$(NASM) src/kernel/enter_kernel.asm -f elf32 -o build/enter_kernel.o
-	$(CC) $(CFLAGS) src/kernel/kernel.c -o build/kernel.o
-	$(LD) $(LDFLAGS) build/enter_kernel.o build/kernel.o -o bin/kernel.bin
+bin/kernel.bin: build/enter_kernel.o $(OBJ)
+	$(LD) $(LDFLAGS) $^ -o $@
 
+build/enter_kernel.o: src/kernel/enter_kernel.asm
+	$(NASM) $< -f elf32 -o $@
+
+build/%.o: src/*/%.c
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	rm -rf bin/* build/*

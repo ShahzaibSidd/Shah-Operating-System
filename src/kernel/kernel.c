@@ -4,6 +4,6 @@ void my_function() {
 
 void main() {
     char* vid_mem = (char*) 0xb8000;
-    *vid_mem = 'H';
+    *vid_mem = 'X';
     return;
 }
