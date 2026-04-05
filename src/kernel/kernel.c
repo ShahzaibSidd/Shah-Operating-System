@@ -1,9 +1,12 @@
+#include "../drivers/screen.h"
+
 void my_function() {
 
 }
 
 void main() {
-    char* vid_mem = (char*) 0xb8000;
-    *vid_mem = 'X';
-    return;
+    screen_init(VGA_BLACK, VGA_LIGHTGREEN);
+    terminal_writestring("HELLO WORLD!");
+    clear_screen();
+    terminal_writestring("chicken");
 }

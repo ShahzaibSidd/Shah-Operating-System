@@ -1,0 +1,47 @@
+#include "screen.h"
+
+static vga_screen screen;
+
+void screen_init(vga_colour text, vga_colour background) {
+    screen.cursor_x = 0;
+    screen.cursor_y = 0;
+    terminal_set_colour(text, background);
+    screen.buffer = (uint16_t*) VGA_MEM;
+
+    clear_screen();
+}
+
+void clear_screen() {
+    screen.cursor_x = 0;
+    screen.cursor_y = 0;
+    
+    uint16_t empty_cell = vga_full_entry(' ', screen.cell_colour);
+    
+    for (size_t i = 0; i < WIDTH * HEIGHT; i++) {
+        screen.buffer[i] = empty_cell;
+    }
+    
+    return;
+}
+
+void terminal_set_colour(vga_colour text, vga_colour background) {
+    screen.cell_colour = vga_colour_entry(text, background);
+}
+
+void terminal_writechar(char character) {
+    size_t addr_offset = ((screen.cursor_y * 80) + screen.cursor_x);
+    uint16_t entry = vga_full_entry(character, screen.cell_colour);
+    screen.buffer[addr_offset] = entry;
+
+    screen.cursor_x = (screen.cursor_x + 1) % WIDTH;
+    if (screen.cursor_x == 0) {
+        screen.cursor_y = (screen.cursor_y + 1) % HEIGHT;
+    }
+}
+
+void terminal_writestring(char* text) {
+    size_t length = strlen(text);
+    for (size_t i = 0; i < length; i++) {
+        terminal_writechar(text[i]);
+    }
+}
