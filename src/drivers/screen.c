@@ -26,6 +26,7 @@ void clear_screen() {
 
 void terminal_set_colour(vga_colour text, vga_colour background) {
     screen.cell_colour = vga_colour_entry(text, background);
+    return;
 }
 
 void terminal_writechar(char character) {
@@ -37,6 +38,7 @@ void terminal_writechar(char character) {
     if (screen.cursor_x == 0) {
         screen.cursor_y = (screen.cursor_y + 1) % HEIGHT;
     }
+    return;
 }
 
 void terminal_writestring(char* text) {
@@ -44,4 +46,5 @@ void terminal_writestring(char* text) {
     for (size_t i = 0; i < length; i++) {
         terminal_writechar(text[i]);
     }
+    return;
 }
