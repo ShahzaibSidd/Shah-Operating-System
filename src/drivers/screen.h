@@ -55,4 +55,5 @@ void terminal_set_colour(vga_colour text, vga_colour background);
 
 void terminal_writechar(char character);
 void terminal_writestring(char* text);
-
+void terminal_newline();
+void terminal_scroll();

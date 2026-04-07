@@ -48,3 +48,26 @@ void terminal_writestring(char* text) {
     }
     return;
 }
+
+void terminal_newline() {
+    if (screen.cursor_y + 1 == HEIGHT) {
+        terminal_scroll();
+
+    }
+    screen.cursor_x = 0;
+    screen.cursor_y++;
+    return;
+}
+
+void terminal_scroll() {
+    // move all bytes up one row
+    for (size_t i = 0; i < (HEIGHT * WIDTH) - WIDTH; i++) {
+        screen.buffer[i] = screen.buffer[i + 80];
+    }
+    uint16_t empty_entry = vga_full_entry(' ', screen.cell_colour);
+    for (size_t i = 0; i < WIDTH; i++) {
+        screen.buffer[i + (24 * 80)] = empty_entry;
+    }
+    screen.cursor_y--;
+    return;
+}

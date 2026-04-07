@@ -5,8 +5,6 @@ void my_function() {
 }
 
 void main() {
-    screen_init(VGA_BLACK, VGA_LIGHTGREEN);
-    terminal_writestring("HELLO WORLD!");
-    clear_screen();
-    terminal_writestring("chicken");
+    screen_init(VGA_WHITE, VGA_BLACK);
+    terminal_writestring("HELLO 1");
 }
