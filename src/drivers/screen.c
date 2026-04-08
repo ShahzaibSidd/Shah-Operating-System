@@ -1,4 +1,5 @@
 #include "screen.h"
+#include "../kernel/low_level.h"
 
 static vga_screen screen;
 
@@ -29,6 +30,23 @@ void terminal_set_colour(vga_colour text, vga_colour background) {
     return;
 }
 
+void terminal_move_cursor(uint8_t x, uint8_t y) {
+    uint16_t pos = (y * WIDTH) + x;
+    uint8_t pos_low = (uint8_t) pos & 0xFF;
+    uint8_t pos_high = (uint8_t) pos >> 8;
+
+    port_byte_out(IDX_PORT, 0x0F);
+    port_byte_out(DATA_PORT, pos_low);
+
+    port_byte_out(IDX_PORT, 0x0E);
+    port_byte_out(DATA_PORT, pos_high);
+}
+
+void terminal_align_cursor() {
+    terminal_move_cursor(screen.cursor_x, screen.cursor_y);
+}
+
+
 void terminal_writechar(char character) {
     size_t addr_offset = ((screen.cursor_y * 80) + screen.cursor_x);
     uint16_t entry = vga_full_entry(character, screen.cell_colour);
@@ -38,6 +56,7 @@ void terminal_writechar(char character) {
     if (screen.cursor_x == 0) {
         screen.cursor_y = (screen.cursor_y + 1) % HEIGHT;
     }
+    terminal_align_cursor();
     return;
 }
 
@@ -52,10 +71,10 @@ void terminal_writestring(char* text) {
 void terminal_newline() {
     if (screen.cursor_y + 1 == HEIGHT) {
         terminal_scroll();
-
     }
     screen.cursor_x = 0;
     screen.cursor_y++;
+    terminal_align_cursor();
     return;
 }
 
@@ -64,10 +83,14 @@ void terminal_scroll() {
     for (size_t i = 0; i < (HEIGHT * WIDTH) - WIDTH; i++) {
         screen.buffer[i] = screen.buffer[i + 80];
     }
+    
+    // clear last line if we on it
     uint16_t empty_entry = vga_full_entry(' ', screen.cell_colour);
     for (size_t i = 0; i < WIDTH; i++) {
         screen.buffer[i + (24 * 80)] = empty_entry;
     }
     screen.cursor_y--;
+
+    terminal_align_cursor();
     return;
 }

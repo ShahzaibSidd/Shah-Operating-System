@@ -5,6 +5,10 @@
 #define HEIGHT 25
 #define VGA_MEM 0xB8000
 
+#define IDX_PORT  0x3D4
+#define DATA_PORT 0x3D5
+
+
 typedef enum {
     VGA_BLACK           = 0x0,
     VGA_BLUE            = 0x1,
@@ -52,6 +56,9 @@ void screen_init(vga_colour text, vga_colour background);
 void clear_screen();
 
 void terminal_set_colour(vga_colour text, vga_colour background);
+void terminal_move_cursor(uint8_t x, uint8_t y);
+void terminal_align_cursor();
+
 
 void terminal_writechar(char character);
 void terminal_writestring(char* text);
