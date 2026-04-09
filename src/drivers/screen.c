@@ -1,5 +1,4 @@
-#include "screen.h"
-#include "../kernel/low_level.h"
+#include "drivers/screen.h"
 
 static vga_screen screen;
 

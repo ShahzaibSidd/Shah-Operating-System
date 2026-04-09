@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include "kernel/low_level.h"
+
 #define WIDTH 80
 #define HEIGHT 25
 #define VGA_MEM 0xB8000
