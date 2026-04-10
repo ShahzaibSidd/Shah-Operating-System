@@ -8,11 +8,11 @@ NASM := nasm
 
 ifeq ($(shell test -f $(CROSS_GCC) && echo yes),yes)
 CC := $(CROSS_GCC)
-CFLAGS := -ffreestanding -fno-pic -fno-pie -c -g -Iinc
+CFLAGS := -ffreestanding -fno-pic -fno-pie -c -g -Iinc -mgeneral-regs-only
 LDFLAGS := -Ttext 0x1000 --oformat binary
 else
 CC := gcc
-CFLAGS := -m32 -ffreestanding -fno-pic -fno-pie -c -g -Iinc
+CFLAGS := -m32 -ffreestanding -fno-pic -fno-pie -c -g -Iinc -mgeneral-regs-only
 LDFLAGS := -m elf_i386 -Ttext 0x1000 --oformat binary
 endif
 

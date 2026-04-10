@@ -48,12 +48,17 @@ void terminal_align_cursor() {
 
 void terminal_writechar(char character) {
     size_t addr_offset = ((screen.cursor_y * 80) + screen.cursor_x);
-    uint16_t entry = vga_full_entry(character, screen.cell_colour);
-    screen.buffer[addr_offset] = entry;
 
-    screen.cursor_x = (screen.cursor_x + 1) % WIDTH;
-    if (screen.cursor_x == 0) {
-        screen.cursor_y = (screen.cursor_y + 1) % HEIGHT;
+    if (character == '\n') {
+        terminal_newline();
+    } else {
+        uint16_t entry = vga_full_entry(character, screen.cell_colour);
+        screen.buffer[addr_offset] = entry;
+        
+        screen.cursor_x = (screen.cursor_x + 1) % WIDTH;
+        if (screen.cursor_x == 0) {
+            screen.cursor_y = (screen.cursor_y + 1) % HEIGHT;
+        }
     }
     terminal_align_cursor();
     return;
