@@ -34,6 +34,11 @@ static inline void pic_enable(uint8_t irq) {
         val = val & ~(1 << irq);
         port_byte_out(0x21, val);
     } else {
+        // Unmask IRQ 2 on master PIC to allow slave PIC interrupts
+        uint8_t master_val = port_byte_in(0x21);
+        master_val = master_val & ~(1 << 2);
+        port_byte_out(0x21, master_val);
+
         irq -= 8;
         uint8_t val = port_byte_in(0xA1);
         val = val & ~(1 << irq);
