@@ -5,8 +5,6 @@ mmap_entry* get_mmap_entry(size_t n) {
     return (mmap_entry*) (MMAP_ADDR + (ENTRY_SIZE * n));
 }
 
-
-
 void print_mmap_entry(size_t n) {
     mmap_entry* curr_entry = get_mmap_entry(n);
 

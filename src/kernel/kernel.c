@@ -1,15 +1,10 @@
 #include "drivers/screen.h"
 #include "kernel/idt.h"
 #include "kernel/mem_map.h"
+#include "kernel/pmm.h"
 
 void main() {
-    screen_init(VGA_WHITE, VGA_BLACK);
-    uint32_t test = 0xFEEDBEEF;
-    terminal_writehex(test, true);
-    terminal_newline();
-    
-    mmap_entry* mmap = (mmap_entry*)0x8000;
-
+    screen_init(VGA_WHITE, VGA_BLACK);   
     print_mmap_entry(0);
     print_mmap_entry(1);
     print_mmap_entry(2);
@@ -18,8 +13,8 @@ void main() {
     print_mmap_entry(5);
 
     terminal_newline();
-    void* main_addr = main;
 
+    bitmap_init();
 
     idt_init();
     __asm__ volatile("sti");
