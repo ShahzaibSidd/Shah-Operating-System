@@ -2,8 +2,10 @@
 #include "drivers/screen.h"
 
 mmap_entry* get_mmap_entry(size_t n) {
-    return (mmap_entry*) (0x8000 + (0x18 * n));
+    return (mmap_entry*) (MMAP_ADDR + (ENTRY_SIZE * n));
 }
+
+
 
 void print_mmap_entry(size_t n) {
     mmap_entry* curr_entry = get_mmap_entry(n);
@@ -13,6 +15,9 @@ void print_mmap_entry(size_t n) {
     terminal_writestring(" - ");
 
     terminal_writehex(curr_entry->base1 + curr_entry->length1 - 1, true);
+
+    terminal_writestring(" SIZE: ");
+    terminal_writehex(curr_entry->length1, true);
 
     terminal_writestring(" TYPE: ");
     if (curr_entry->type == 1) {

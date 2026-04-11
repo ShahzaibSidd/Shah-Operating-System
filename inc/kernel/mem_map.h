@@ -2,6 +2,8 @@
 #include <stddef.h>
 
 #define MMAP_ADDR 0x8000
+#define ENTRY_SIZE 0x18
+#define NUM_ENTRIES 6
 
 typedef struct {
     uint32_t base1;
@@ -13,4 +15,5 @@ typedef struct {
 } __attribute__((packed)) mmap_entry;
 
 mmap_entry* get_mmap_entry(size_t n);
+
 void print_mmap_entry(size_t n);

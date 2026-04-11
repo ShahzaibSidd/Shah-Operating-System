@@ -9,11 +9,11 @@ NASM := nasm
 ifeq ($(shell test -f $(CROSS_GCC) && echo yes),yes)
 CC := $(CROSS_GCC)
 CFLAGS := -ffreestanding -fno-pic -fno-pie -c -g -Iinc -mgeneral-regs-only
-LDFLAGS := -Ttext 0x10000 --oformat binary
+LDFLAGS := -T linker.ld --oformat binary
 else
 CC := gcc
 CFLAGS := -m32 -ffreestanding -fno-pic -fno-pie -c -g -Iinc -mgeneral-regs-only
-LDFLAGS := -m elf_i386 -Ttext 0x10000 --oformat binary
+LDFLAGS := -m elf_i386 -T linker.ld --oformat binary
 endif
 
 ifeq ($(shell test -f $(CROSS_LD) && echo yes),yes)
@@ -23,9 +23,9 @@ LD := ld
 endif
 
 ifeq ($(shell test -f $(CROSS_LD) && echo yes),yes)
-LDFLAGS_ELF := -Ttext 0x10000
+LDFLAGS_ELF := -T linker.ld
 else
-LDFLAGS_ELF := -m elf_i386 -Ttext 0x10000
+LDFLAGS_ELF := -m elf_i386 -T linker.ld
 endif
 
 C_SOURCES := $(wildcard src/kernel/*.c src/drivers/*.c)
