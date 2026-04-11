@@ -4,7 +4,6 @@
 static idt_entry idt[256];
 static idt_descriptor curr_descriptor;
 
-
 void set_idt_gate(size_t n, uint32_t handler) {
     idt[n].base_low = (uint16_t) (handler & 0xFFFF);
     
@@ -23,6 +22,15 @@ void set_idt_gate(size_t n, uint32_t handler) {
 }
 
 void idt_init() {
+    // Zero out the IDT to be safe in case BSS is not cleared
+    for (int i = 0; i < 256; i++) {
+        idt[i].base_low = 0;
+        idt[i].segment_selector = 0;
+        idt[i].reserved = 0;
+        idt[i].flags = 0;
+        idt[i].base_high = 0;
+    }
+
     // re-map pic irqs 0-15 to 32-40
     pic_remap();
 
