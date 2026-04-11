@@ -9,11 +9,11 @@ NASM := nasm
 ifeq ($(shell test -f $(CROSS_GCC) && echo yes),yes)
 CC := $(CROSS_GCC)
 CFLAGS := -ffreestanding -fno-pic -fno-pie -c -g -Iinc -mgeneral-regs-only
-LDFLAGS := -Ttext 0x1000 --oformat binary
+LDFLAGS := -Ttext 0x10000 --oformat binary
 else
 CC := gcc
 CFLAGS := -m32 -ffreestanding -fno-pic -fno-pie -c -g -Iinc -mgeneral-regs-only
-LDFLAGS := -m elf_i386 -Ttext 0x1000 --oformat binary
+LDFLAGS := -m elf_i386 -Ttext 0x10000 --oformat binary
 endif
 
 ifeq ($(shell test -f $(CROSS_LD) && echo yes),yes)
@@ -23,16 +23,16 @@ LD := ld
 endif
 
 ifeq ($(shell test -f $(CROSS_LD) && echo yes),yes)
-LDFLAGS_ELF := -Ttext 0x1000
+LDFLAGS_ELF := -Ttext 0x10000
 else
-LDFLAGS_ELF := -m elf_i386 -Ttext 0x1000
+LDFLAGS_ELF := -m elf_i386 -Ttext 0x10000
 endif
 
 C_SOURCES := $(wildcard src/kernel/*.c src/drivers/*.c)
 OBJ := $(addprefix build/, $(notdir $(C_SOURCES:.c=.o)))
 
 all: bin/os.bin
-	qemu-system-i386 -drive format=raw,file=$<
+	qemu-system-i386 -drive format=raw,file=$< -monitor stdio	
 
 bin/os.bin: bin/bootloader.bin bin/kernel.bin
 	dd if=/dev/zero of=$@ bs=512 count=2880

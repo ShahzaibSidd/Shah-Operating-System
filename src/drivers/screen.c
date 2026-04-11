@@ -2,19 +2,33 @@
 
 static vga_screen screen;
 
-void int_to_hex(uint32_t n, char outp[]) {
-    outp[0] = '0';
-    outp[1] = 'x';
-    outp[10] = '\0';
+void int_to_hex(uint32_t n, char outp[], bool format) {
+    if (format) {
+        outp[0] = '0';
+        outp[1] = 'x';
 
-    for (size_t i = 9; i > 1; i--) {
-        uint32_t curr_char = n & 0xF;
-        if (curr_char < 10) {
-            outp[i] = '0' + curr_char;
-        } else {
-            outp[i] = 'A' + (curr_char - 10);
+        for (int i = 9; i > 1; i--) {
+            uint32_t curr_char = n & 0xF;
+            if (curr_char < 10) {
+                outp[i] = '0' + curr_char;
+            } else {
+                outp[i] = 'A' + (curr_char - 10);
+            }
+            n >>= 4;
         }
-        n >>= 4;
+        outp[10] = '\0';
+
+    } else {
+        for (int i = 7; i >= 0; i--) {
+            uint32_t curr_char = n & 0xF;
+            if (curr_char < 10) {
+                outp[i] = '0' + curr_char;
+            } else {
+                outp[i] = 'A' + (curr_char - 10);
+            }
+            n >>= 4;
+        }   
+        outp[8] = '\0';
     }
 }
 
@@ -79,10 +93,16 @@ void terminal_writechar(char character) {
     return;
 }
 
-void terminal_writehex(uint32_t n) {
-    char buffer[10];
-    int_to_hex(n, buffer);
-    terminal_writestring(buffer);
+void terminal_writehex(uint32_t n, bool format) {
+    if (format) {
+        char buffer[11];
+        int_to_hex(n, buffer, format);
+        terminal_writestring(buffer);
+    } else {
+        char buffer[9];
+        int_to_hex(n, buffer, format);
+        terminal_writestring(buffer);
+    }
 }
 
 void terminal_writestring(char* text) {
