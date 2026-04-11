@@ -19,10 +19,13 @@ call print_new_line
 
 call load_kernel
 
+call get_mmap
+
 call load_pm
 
 jmp $
 
+%include "boot/get_mmap.asm"
 %include "boot/print_string.asm"
 %include "boot/print_hex.asm"
 %include "boot/load_disk.asm"

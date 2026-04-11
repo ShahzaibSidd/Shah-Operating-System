@@ -2,6 +2,22 @@
 
 static vga_screen screen;
 
+void int_to_hex(uint32_t n, char outp[]) {
+    outp[0] = '0';
+    outp[1] = 'x';
+    outp[10] = '\0';
+
+    for (size_t i = 9; i > 1; i--) {
+        uint32_t curr_char = n & 0xF;
+        if (curr_char < 10) {
+            outp[i] = '0' + curr_char;
+        } else {
+            outp[i] = 'A' + (curr_char - 10);
+        }
+        n >>= 4;
+    }
+}
+
 void screen_init(vga_colour text, vga_colour background) {
     screen.cursor_x = 0;
     screen.cursor_y = 0;
@@ -61,6 +77,12 @@ void terminal_writechar(char character) {
         }
     }
     return;
+}
+
+void terminal_writehex(uint32_t n) {
+    char buffer[10];
+    int_to_hex(n, buffer);
+    terminal_writestring(buffer);
 }
 
 void terminal_writestring(char* text) {

@@ -56,6 +56,9 @@ static inline size_t strlen(char* data) {
     return count;
 }
 
+void int_to_hex(uint32_t n, char outp[]);
+
+
 void screen_init(vga_colour text, vga_colour background);
 void clear_screen();
 
@@ -65,6 +68,7 @@ void terminal_align_cursor();
 
 
 void terminal_writechar(char character);
+void terminal_writehex(uint32_t n);
 void terminal_writestring(char* text);
 void terminal_newline();
 void terminal_scroll();
