@@ -28,7 +28,7 @@ else
 LDFLAGS_ELF := -m elf_i386 -T linker.ld
 endif
 
-C_SOURCES := $(wildcard src/kernel/*.c src/drivers/*.c)
+C_SOURCES := $(wildcard src/kernel/*.c src/drivers/*.c src/helper/*.c)
 OBJ := $(addprefix build/, $(notdir $(C_SOURCES:.c=.o)))
 
 all: bin/os.bin

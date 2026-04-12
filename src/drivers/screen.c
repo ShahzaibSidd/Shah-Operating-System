@@ -44,7 +44,8 @@ void screen_init(vga_colour text, vga_colour background) {
 void clear_screen() {
     screen.cursor_x = 0;
     screen.cursor_y = 0;
-    
+    terminal_align_cursor();
+
     uint16_t empty_cell = vga_full_entry(' ', screen.cell_colour);
     
     for (size_t i = 0; i < WIDTH * HEIGHT; i++) {
