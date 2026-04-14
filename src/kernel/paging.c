@@ -17,9 +17,16 @@ void paging_init() {
         first_table[i].rw = 1;
     }
 
+    // Identity map (0x00000000 - 0x003FFFFF)
     kernel_directory[0].table = ((uint32_t)first_table >> 12);
     kernel_directory[0].present = 1;
     kernel_directory[0].rw = 1;
+
+    // Higher-half map (0xC0000000 - 0xC03FFFFF)
+    // 0xC0000000 >> 22 = 768
+    kernel_directory[768].table = ((uint32_t)first_table >> 12);
+    kernel_directory[768].present = 1;
+    kernel_directory[768].rw = 1;
 
     load_page_directory((uint32_t)kernel_directory);
     enable_paging();

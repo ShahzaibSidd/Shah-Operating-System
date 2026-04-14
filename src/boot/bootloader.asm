@@ -36,7 +36,7 @@ load_kernel:
     mov ax, 0x1000
     mov es, ax
     mov bx, 0x0000
-    mov dh, 15
+    mov dh, 50
     mov dl, [BOOT_DRIVE]
     call load_disk
     mov ax, 0
@@ -48,7 +48,7 @@ begin_pm:
     ; Copy kernel to 0x100000
     mov esi, TEMP_KERNEL_LOAD_ADDR
     mov edi, KERNEL_OFFSET
-    mov ecx, 15 * 512 / 4 ; count in dwords
+    mov ecx, 50 * 512 / 4 ; count in dwords
     rep movsd
 
     call KERNEL_OFFSET

@@ -8,7 +8,7 @@
 
 #define WIDTH 80
 #define HEIGHT 25
-#define VGA_MEM 0xB8000
+#define VGA_MEM 0xC00B8000
 
 #define IDX_PORT  0x3D4
 #define DATA_PORT 0x3D5
