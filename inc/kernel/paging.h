@@ -1,9 +1,8 @@
-#ifndef PAGING_H
-#define PAGING_H
-
 #include <stdint.h>
 #include <stddef.h>
 #include "helper/string.h"
+
+#define KERNEL_VIRTUAL_BASE 0xC0000000
 
 typedef struct {
     uint32_t present    : 1;
@@ -41,5 +40,4 @@ static inline void enable_paging() {
 }
 
 void paging_init();
-
-#endif
+void paging_identity_del();

@@ -34,11 +34,11 @@ typedef enum {
 } vga_colour;
 
 typedef struct {
+    uint16_t* buffer;
     uint8_t cursor_x;
     uint8_t cursor_y;
     uint8_t cell_colour;
-    uint16_t* buffer;
-} vga_screen;
+} __attribute__((packed)) vga_screen;
 
 static inline uint8_t vga_colour_entry(vga_colour text, vga_colour background) {
     return (background << 4) | text;

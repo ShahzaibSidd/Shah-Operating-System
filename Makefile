@@ -32,7 +32,7 @@ C_SOURCES := $(wildcard src/kernel/*.c src/drivers/*.c src/helper/*.c)
 OBJ := $(addprefix build/, $(notdir $(C_SOURCES:.c=.o)))
 
 all: bin/os.bin
-	qemu-system-i386 -drive format=raw,file=$< -monitor stdio	
+	qemu-system-i386 -drive format=raw,file=$< -monitor stdio -d int,cpu_reset -no-reboot -no-shutdown 
 
 bin/os.bin: bin/bootloader.bin bin/kernel.bin
 	dd if=/dev/zero of=$@ bs=512 count=2880

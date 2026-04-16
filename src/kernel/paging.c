@@ -15,6 +15,7 @@ void paging_init() {
         first_table[i].frame = i;
         first_table[i].present = 1;
         first_table[i].rw = 1;
+        set_bitmap_ind(i);
     }
 
     // Identity map (0x00000000 - 0x003FFFFF)
@@ -30,4 +31,12 @@ void paging_init() {
 
     load_page_directory((uint32_t)kernel_directory);
     enable_paging();
+
+    // Convert to virtual addresses
+    kernel_directory = (pd_entry_t*) ((uint32_t)kernel_directory + KERNEL_VIRTUAL_BASE);
+    first_table = (pt_entry_t*) ((uint32_t)first_table + KERNEL_VIRTUAL_BASE);
+}
+
+void paging_identity_del() {
+    memset(&kernel_directory[0], 0, 4);
 }
