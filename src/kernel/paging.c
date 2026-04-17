@@ -29,6 +29,11 @@ void paging_init() {
     kernel_directory[768].present = 1;
     kernel_directory[768].rw = 1;
 
+    // recursive kernel directory
+    kernel_directory[1023].table = ((uint32_t)kernel_directory >> 12);
+    kernel_directory[1023].present = 1;
+    kernel_directory[1023].rw = 1;
+
     load_page_directory((uint32_t)kernel_directory);
     enable_paging();
 

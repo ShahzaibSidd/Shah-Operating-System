@@ -1,4 +1,7 @@
 #include "kernel/low_level.h"
+#include "drivers/screen.h"
+
+extern void kernel_end;
 
 unsigned char port_byte_in(unsigned short port) {
     unsigned char result;
@@ -20,4 +23,9 @@ unsigned short port_word_in(unsigned short port) {
 void port_word_out(unsigned short port, unsigned short data) {
     __asm__("out %%ax, %%dx" : :"a" (data), "d" (port));
     return;
+}
+
+void print_kernel_end() {
+    terminal_writehex((uint32_t)&kernel_end, true);
+    terminal_newline();
 }

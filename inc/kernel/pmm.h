@@ -17,3 +17,5 @@ bool is_bitmap_ind_free(uint32_t page_num);
 void pmm_mark_used(uint32_t page_addr);
 void pmm_mark_free(uint32_t page_addr);
 void* pmm_alloc_page();
+
+void print_bitmap();

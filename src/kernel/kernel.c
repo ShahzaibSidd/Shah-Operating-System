@@ -15,6 +15,7 @@ void main() {
     paging_identity_del();
 
     terminal_writestring("testing\n");
+    print_kernel_end();
 
     __asm__ volatile("sti");
 

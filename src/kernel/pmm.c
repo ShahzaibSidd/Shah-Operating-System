@@ -12,7 +12,6 @@ void pmm_init() {
     }
 
     // 2. Mark kernel memory as used
-    extern void kernel_end;
     uint32_t kernel_end_phys = (uint32_t)&kernel_end - 0xC0000000;
     
     // Mark from RAM_START to kernel_end as used
@@ -61,8 +60,5 @@ void* pmm_alloc_page() {
 }
 
 void print_bitmap() {
-    for (size_t i = 0; i < 10; i++) {
-        terminal_writehex(page_bitmap[i], true);
-        terminal_newline();
-    }
+    terminal_writehex((uint32_t)&kernel_end, true);
 }
