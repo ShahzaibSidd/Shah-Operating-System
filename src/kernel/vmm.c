@@ -17,9 +17,8 @@ void map_page(void* virt_addr, uint32_t phys_addr, uint32_t pd_flags, uint32_t p
     uint32_t* page_table = (uint32_t*)(0xFFC00000 + (pd_ind * 0x1000));
 
     if (!(page_dir[pd_ind] & 0x01)) {
-        pt_entry_t* new_page_table = pmm_alloc_page();
-        new_page_table = (phys_addr & 0xFFFFF000) | pd_flags | 0x01;
-        page_dir[pd_ind] = new_page_table;
+        uint32_t* new_page_table = pmm_alloc_page();
+        page_dir[pd_ind] = ((uint32_t)new_page_table & 0xFFFFF000) | pd_flags | 0x01;;
         memset(page_table, 0, 4096);
     }
 
@@ -45,5 +44,5 @@ void unmap_page(void* virt_addr) {
 
     page_table[pt_ind] = 0;
     __asm__ volatile("invlpg (%0)" : : "r"(virt_addr) : "memory");
-    
+
 }
