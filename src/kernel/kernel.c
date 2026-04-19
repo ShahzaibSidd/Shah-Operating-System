@@ -25,6 +25,26 @@ void main() {
     terminal_writehex((uint32_t)new_val, true);
     terminal_newline();
     terminal_writehex((uint32_t)*new_val, true);
+    terminal_newline();
+    terminal_newline();
+    kfree(new_val);
+
+    new_val = kmalloc(2);
+    *new_val = 0xDA;
+    terminal_writehex((uint32_t)new_val, true);
+    terminal_newline();
+    terminal_writehex((uint32_t)*new_val, true);
+    terminal_newline();
+    terminal_newline();
+    kfree(new_val);
+
+    uint32_t* newer_val = kmalloc(15);
+    *newer_val = 0xDEADBEEF;
+    terminal_writehex((uint32_t)newer_val, true);
+    terminal_newline();
+    terminal_writehex((uint32_t)*newer_val, true);
+
+
 
     __asm__ volatile("sti");
 

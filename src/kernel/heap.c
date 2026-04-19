@@ -2,6 +2,7 @@
 #include "kernel/pmm.h"
 #include "kernel/vmm.h"
 #include "drivers/screen.h"
+#include "helper/string.h"
 
 heap_node_t* heap_head = NULL;
 uint32_t heap_curr_top = HEAP_START;
@@ -96,5 +97,17 @@ void* expand_heap(heap_node_t* last_node, uint32_t malloc_size) {
 
 
 void kfree(void* addr) {
+    if (!addr) {
+        return;
+    }
 
+    heap_node_t* node_header = (heap_node_t*)((uint8_t*)addr - heap_struct_size);
+    node_header->is_free = 1;
+
+    if (node_header->next && node_header->next->is_free) {
+        node_header->size += node_header->next->size + heap_struct_size;
+        node_header->next = node_header->next->next;
+    }
+    
+    memset(addr, 0, node_header->size);
 }
