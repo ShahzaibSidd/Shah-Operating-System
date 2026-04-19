@@ -16,13 +16,15 @@ void main() {
     paging_identity_del();
 
     heap_init();
-
-    terminal_writestring("testing\n");
+    terminal_newline();
     print_kernel_end();
     terminal_newline();
 
     uint16_t* new_val = kmalloc(2);
-    terminal_writehex((uint32_t)&new_val, true);
+    *new_val = 0xBA;
+    terminal_writehex((uint32_t)new_val, true);
+    terminal_newline();
+    terminal_writehex((uint32_t)*new_val, true);
 
     __asm__ volatile("sti");
 

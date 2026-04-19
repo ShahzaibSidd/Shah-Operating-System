@@ -60,5 +60,8 @@ void* pmm_alloc_page() {
 }
 
 void print_bitmap() {
-    terminal_writehex((uint32_t)&kernel_end, true);
+    for (int i = 30; i < 40; i++) {
+        terminal_writehex(page_bitmap[i], true);
+        terminal_newline();
+    }
 }

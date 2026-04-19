@@ -24,7 +24,7 @@ void heap_init() {
     heap_curr_top += BYTES_PER_PAGE;
 
     terminal_writestring("HEAP HEAD: ");
-    terminal_writehex((uint32_t)&heap_head, true);
+    terminal_writehex((uint32_t)heap_head, true);
 }
 
 void* kmalloc(uint32_t malloc_size) {
