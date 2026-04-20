@@ -2,6 +2,48 @@
 
 static vga_screen screen;
 
+static char* init_message[18] = {
+    "██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗",    
+    "██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝",    
+    "██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  ",    
+    "██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  ",    
+    "╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗",    
+    " ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝",    
+    "                    ████████╗ ██████╗                         ",    
+    "                    ╚══██╔══╝██╔═══██╗                        ",    
+    "                       ██║   ██║   ██║                        ",    
+    "                       ██║   ██║   ██║                        ",    
+    "                       ██║   ╚██████╔╝                        ",    
+    "                       ╚═╝    ╚═════╝                         ",    
+    "███████╗██╗  ██╗ █████╗ ██╗  ██╗     ██████╗ ███████╗██╗      ",    
+    "██╔════╝██║  ██║██╔══██╗██║  ██║    ██╔═══██╗██╔════╝██║      ",    
+    "███████╗███████║███████║███████║    ██║   ██║███████╗██║      ",    
+    "╚════██║██╔══██║██╔══██║██╔══██║    ██║   ██║╚════██║╚═╝      ",    
+    "███████║██║  ██║██║  ██║██║  ██║    ╚██████╔╝███████║██╗      ",    
+    "╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚══════╝╚═╝      ",
+};
+
+static char* init_message_decoded[18] = {
+    "\xDB\xDB\xBB    \xDB\xDB\xBB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xDB\xDB\xBB      \xDB\xDB\xDB\xDB\xDB\xDB\xBB \xDB\xDB\xDB\xDB\xDB\xDB\xBB \xDB\xDB\xDB\xBB   \xDB\xDB\xDB\xBB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB",
+    "\xDB\xDB\xBA    \xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xCD\xCD\xBC\xDB\xDB\xBA     \xDB\xDB\xC9\xCD\xCD\xCD\xCD\xBC\xDB\xDB\xC9\xCD\xCD\xCD\xDB\xDB\xBB\xDB\xDB\xDB\xDB\xBB \xDB\xDB\xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xCD\xCD\xBC",
+    "\xDB\xDB\xBA \xDB\xBB \xDB\xDB\xBA\xDB\xDB\xDB\xDB\xDB\xBB  \xDB\xDB\xBA     \xDB\xDB\xBA     \xDB\xDB\xBA   \xDB\xDB\xBA\xDB\xDB\xC9\xDB\xDB\xDB\xDB\xC9\xDB\xDB\xBA\xDB\xDB\xDB\xDB\xDB\xBB  ",
+    "\xDB\xDB\xBA\xDB\xDB\xDB\xBB\xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xBC  \xDB\xDB\xBA     \xDB\xDB\xBA     \xDB\xDB\xBA   \xDB\xDB\xBA\xDB\xDB\xBA\xC8\xDB\xDB\xC9\xBC\xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xBC  ",
+    "\xC8\xDB\xDB\xDB\xC9\xDB\xDB\xDB\xC9\xBC\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xC8\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xC8\xDB\xDB\xDB\xDB\xDB\xDB\xC9\xBC\xDB\xDB\xBA \xC8\xCD\xBC \xDB\xDB\xBA\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB",
+    " \xC8\xCD\xCD\xBC\xC8\xCD\xCD\xBC \xC8\xCD\xCD\xCD\xCD\xCD\xCD\xBC\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xBC \xC8\xCD\xCD\xCD\xCD\xCD\xBC \xC8\xCD\xCD\xCD\xCD\xCD\xBC \xC8\xCD\xBC     \xC8\xCD\xBC\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xBC",
+    "                    \xDB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB \xDB\xDB\xDB\xDB\xDB\xDB\xBB                    ",
+    "                    \xC8\xCD\xCD\xDB\xDB\xC9\xCD\xCD\xBC\xDB\xDB\xC9\xCD\xCD\xCD\xDB\xDB\xBB                   ",
+    "                       \xDB\xDB\xBA   \xDB\xDB\xBA   \xDB\xDB\xBA                   ",
+    "                       \xDB\xDB\xBA   \xDB\xDB\xBA   \xDB\xDB\xBA                   ",
+    "                       \xDB\xDB\xBA   \xC8\xDB\xDB\xDB\xDB\xDB\xDB\xC9\xBC                   ",
+    "                       \xC8\xCD\xBC    \xC8\xCD\xCD\xCD\xCD\xCD\xBC                    ",
+    "\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xDB\xDB\xBA  \xDB\xDB\xBA \xDB\xDB\xDB\xDB\xDB\xBB \xDB\xDB\xBA  \xDB\xDB\xBA     \xDB\xDB\xDB\xDB\xDB\xDB\xBB \xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xDB\xDB\xBA ",
+    "\xDB\xDB\xC9\xCD\xCD\xCD\xCD\xBC\xDB\xDB\xBA  \xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xDB\xDB\xBB\xDB\xDB\xBA  \xDB\xDB\xBA    \xDB\xDB\xC9\xCD\xCD\xCD\xDB\xDB\xBB\xDB\xDB\xC9\xCD\xCD\xCD\xCD\xBC\xDB\xDB\xBA ",
+    "\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBA\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBA\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBA    \xDB\xDB\xBA   \xDB\xDB\xBA\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBB\xDB\xDB\xBA ",
+    "\xC8\xCD\xCD\xCD\xCD\xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xDB\xDB\xBA\xDB\xDB\xC9\xCD\xCD\xDB\xDB\xBA    \xDB\xDB\xBA   \xDB\xDB\xBA\xC8\xCD\xCD\xCD\xCD\xDB\xDB\xBA\xC8\xCD\xBC ",
+    "\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBA\xDB\xDB\xBA  \xDB\xDB\xBA\xDB\xDB\xBA  \xDB\xDB\xBA\xDB\xDB\xBA  \xDB\xDB\xBA    \xC8\xDB\xDB\xDB\xDB\xDB\xDB\xC9\xBC\xDB\xDB\xDB\xDB\xDB\xDB\xDB\xBA\xDB\xDB\xBA ",
+    "\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xBC\xC8\xCD\xBC  \xC8\xCD\xBC\xC8\xCD\xBC  \xC8\xCD\xBC\xC8\xCD\xBC  \xC8\xCD\xBC     \xC8\xCD\xCD\xCD\xCD\xCD\xBC \xC8\xCD\xCD\xCD\xCD\xCD\xCD\xBC\xC8\xCD\xBC "
+};
+
 void int_to_hex(uint32_t n, char outp[], bool format) {
     if (format) {
         outp[0] = '0';
@@ -33,10 +75,13 @@ void int_to_hex(uint32_t n, char outp[], bool format) {
 }
 
 void screen_init(vga_colour text, vga_colour background) {
+    screen.buffer = (uint16_t*) VGA_MEM;
+
+    draw_init_anim();
+    
     screen.cursor_x = 0;
     screen.cursor_y = 0;
     terminal_set_colour(text, background);
-    screen.buffer = (uint16_t*) VGA_MEM;
 
     clear_screen();
 }
@@ -76,7 +121,7 @@ void terminal_align_cursor() {
     terminal_move_cursor(screen.cursor_x, screen.cursor_y);
 }
 
-void terminal_writechar(char character) {
+void terminal_writechar(unsigned char character) {
     if (character == '\n') {
         terminal_newline();
     } else {
@@ -109,7 +154,7 @@ void terminal_writehex(uint32_t n, bool format) {
 void terminal_writestring(char* text) {
     size_t length = strlen(text);
     for (size_t i = 0; i < length; i++) {
-        terminal_writechar(text[i]);
+        terminal_writechar((unsigned char)text[i]);
     }
     return;
 }
@@ -139,4 +184,32 @@ void terminal_scroll() {
 
     terminal_align_cursor();
     return;
+}
+
+void draw_welcome_msg(vga_colour text, vga_colour background, bool animate) {
+    terminal_set_colour(text, background);
+    clear_screen();
+    screen.cursor_x = 9;
+    screen.cursor_y = 3;
+    for (size_t i = 0; i < 18; i++) {
+        terminal_writestring(init_message_decoded[i]);
+        if (animate) {
+            stall(25000000);
+        }
+        terminal_newline();
+        screen.cursor_x = 9;
+    }
+}
+
+void draw_init_anim() {
+    draw_welcome_msg(VGA_WHITE, VGA_BLUE, true);
+    stall(0x05000000);
+    draw_welcome_msg(VGA_WHITE, VGA_BROWN, false);
+    stall(0x05000000);
+    draw_welcome_msg(VGA_WHITE, VGA_BLUE, false);
+    stall(0x05000000);
+    draw_welcome_msg(VGA_WHITE, VGA_BROWN, false);
+    stall(0x05000000);
+    draw_welcome_msg(VGA_WHITE, VGA_BLUE, false);
+    stall(0x30000000);
 }

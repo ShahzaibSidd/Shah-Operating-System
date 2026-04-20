@@ -44,17 +44,24 @@ static inline uint8_t vga_colour_entry(vga_colour text, vga_colour background) {
     return (background << 4) | text;
 }
 
-static inline uint16_t vga_full_entry(char entry_character, uint8_t entry_colour) {
-    return ((uint16_t) entry_colour << 8) | (uint16_t) entry_character;
+static inline uint16_t vga_full_entry(uint8_t entry_character, uint8_t entry_colour) {
+    return (uint16_t)entry_character | (uint16_t)entry_colour << 8;
 }
 
-// i should prolly move this somewhere else later
+// TODO: i should prolly move this somewhere else later
 static inline size_t strlen(char* data) {
     size_t count = 0;
     while (data[count]) {
         count++;
     }
     return count;
+}
+
+// TODO: i should prolly move this somewhere else later
+static inline void stall(uint32_t time) {
+    for (size_t i = 0; i < time; i++) {
+        __asm__ volatile("nop");
+    }
 }
 
 void int_to_hex(uint32_t n, char outp[], bool format);
@@ -68,8 +75,11 @@ void terminal_move_cursor(uint8_t x, uint8_t y);
 void terminal_align_cursor();
 
 
-void terminal_writechar(char character);
+void terminal_writechar(unsigned char character);
 void terminal_writehex(uint32_t n, bool format);
 void terminal_writestring(char* text);
 void terminal_newline();
 void terminal_scroll();
+
+void draw_welcome_msg(vga_colour text, vga_colour background, bool animate);
+void draw_init_anim();

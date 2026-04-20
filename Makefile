@@ -60,6 +60,7 @@ gdb: bin/os.bin bin/kernel.elf
 	gdb bin/kernel.elf \
 		-ex "set architecture i386" \
 		-ex "target remote :1234" \
+		-ex "set output-radix 16"
 		-ex "break main" \
 		-ex "continue"
 
