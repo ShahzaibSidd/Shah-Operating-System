@@ -1,4 +1,6 @@
 #include "drivers/screen.h"
+#include "kernel/low_level.h"
+#include "helper/string.h"
 
 static vga_screen screen;
 
@@ -204,11 +206,11 @@ void draw_welcome_msg(vga_colour text, vga_colour background, bool animate) {
 void draw_init_anim() {
     draw_welcome_msg(VGA_WHITE, VGA_BLUE, true);
     stall(0x05000000);
-    draw_welcome_msg(VGA_WHITE, VGA_BROWN, false);
+    draw_welcome_msg(VGA_WHITE, VGA_CYAN, false);
     stall(0x05000000);
     draw_welcome_msg(VGA_WHITE, VGA_BLUE, false);
     stall(0x05000000);
-    draw_welcome_msg(VGA_WHITE, VGA_BROWN, false);
+    draw_welcome_msg(VGA_WHITE, VGA_CYAN, false);
     stall(0x05000000);
     draw_welcome_msg(VGA_WHITE, VGA_BLUE, false);
     stall(0x30000000);

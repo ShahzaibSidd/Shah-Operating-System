@@ -4,8 +4,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include "kernel/low_level.h"
-
 #define WIDTH 80
 #define HEIGHT 25
 #define VGA_MEM 0xC00B8000
@@ -48,24 +46,7 @@ static inline uint16_t vga_full_entry(uint8_t entry_character, uint8_t entry_col
     return (uint16_t)entry_character | (uint16_t)entry_colour << 8;
 }
 
-// TODO: i should prolly move this somewhere else later
-static inline size_t strlen(char* data) {
-    size_t count = 0;
-    while (data[count]) {
-        count++;
-    }
-    return count;
-}
-
-// TODO: i should prolly move this somewhere else later
-static inline void stall(uint32_t time) {
-    for (size_t i = 0; i < time; i++) {
-        __asm__ volatile("nop");
-    }
-}
-
 void int_to_hex(uint32_t n, char outp[], bool format);
-
 
 void screen_init(vga_colour text, vga_colour background);
 void clear_screen();
