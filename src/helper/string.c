@@ -17,3 +17,17 @@ void* memcpy(void* dest, const void* src, size_t n) {
     }
     return dest;
 }
+
+size_t strlen(char* data) {
+    size_t count = 0;
+    while (data[count]) {
+        count++;
+    }
+    return count;
+}
+
+void stall(uint32_t time) {
+    for (size_t i = 0; i < time; i++) {
+        __asm__ volatile("nop");
+    }
+}
