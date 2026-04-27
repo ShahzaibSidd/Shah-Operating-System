@@ -8,5 +8,5 @@
 #define PAGE_ACCESSED 0x20   // Bit 5 (Set by CPU when read)
 #define PAGE_DIRTY    0x40   // Bit 6 (Set by CPU when written to - PTE only)
 
-void map_page(void* virt_addr, uint32_t phys_addr, uint32_t pd_flags, uint32_t pt_flags);
-void unmap_page(void* virt_addr);
+void map_page(uint32_t pd_phys, void* virt_addr, uint32_t phys_addr, uint32_t pd_flags, uint32_t pt_flags);
+void unmap_page(uint32_t pd_phys, void* virt_addr);

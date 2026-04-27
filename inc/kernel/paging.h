@@ -1,3 +1,6 @@
+#ifndef PAGING_H
+#define PAGING_H
+
 #include <stdint.h>
 #include <stddef.h>
 #include "helper/string.h"
@@ -32,6 +35,12 @@ static inline void load_page_directory(uint32_t pd_addr) {
     __asm__ volatile("mov %0, %%cr3" : : "r"(pd_addr) : "memory");
 }
 
+static inline uint32_t get_page_directory() {
+    uint32_t pd_addr;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(pd_addr));
+    return pd_addr;
+}
+
 static inline void enable_paging() {
     uint32_t cr0;
     __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
@@ -40,4 +49,7 @@ static inline void enable_paging() {
 }
 
 void paging_init();
+void page_dir_init(pd_entry_t* pd_virt, uint32_t pd_phys);
 void paging_identity_del();
+
+#endif

@@ -1,6 +1,7 @@
 #include "kernel/heap.h"
 #include "kernel/pmm.h"
 #include "kernel/vmm.h"
+#include "kernel/paging.h"
 #include "drivers/screen.h"
 #include "helper/string.h"
 
@@ -14,7 +15,7 @@ void heap_init() {
     uint32_t flags = PAGE_PRESENT | PAGE_RW;
     
     // map the page to virtual address
-    map_page((void*)heap_curr_top, phys_page_addr, flags, flags);
+    map_page(get_page_directory(), (void*)heap_curr_top, phys_page_addr, flags, flags);
     
     // set up head of linked list heap
     heap_head = (heap_node_t*)HEAP_START;
@@ -65,7 +66,7 @@ void* expand_heap(heap_node_t* last_node, uint32_t malloc_size) {
         uint32_t phys_page_addr = (uint32_t)pmm_alloc_page();
         uint32_t flags = PAGE_PRESENT | PAGE_RW;
         
-        map_page((void*)heap_curr_top, phys_page_addr, flags, flags);
+        map_page(get_page_directory(), (void*)heap_curr_top, phys_page_addr, flags, flags);
 
         heap_curr_top += BYTES_PER_PAGE;
     }

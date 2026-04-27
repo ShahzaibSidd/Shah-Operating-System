@@ -42,6 +42,22 @@ void paging_init() {
     first_table = (pt_entry_t*) ((uint32_t)first_table + KERNEL_VIRTUAL_BASE);
 }
 
+void page_dir_init(pd_entry_t* pd_virt, uint32_t pd_phys) {
+    memset(pd_virt, 0, BYTES_PER_PAGE);
+    
+    // Map kernel (Higher Half)
+    // We use the physical address of first_table
+    uint32_t first_table_phys = (uint32_t)first_table - KERNEL_VIRTUAL_BASE;
+    pd_virt[768].table = (first_table_phys >> 12);
+    pd_virt[768].present = 1;
+    pd_virt[768].rw = 1;
+
+    // Recursive mapping: the last entry points to the page directory itself
+    pd_virt[1023].table = (pd_phys >> 12);
+    pd_virt[1023].present = 1;
+    pd_virt[1023].rw = 1;
+}
+
 void paging_identity_del() {
     memset(&kernel_directory[0], 0, 4);
 }
