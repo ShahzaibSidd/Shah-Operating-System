@@ -23,7 +23,7 @@ void user_mode_function() {
     }
 
     while(1) {
-        __asm__ volatile("hlt"); 
+        //__asm__ volatile("hlt"); 
     }
 }
 
