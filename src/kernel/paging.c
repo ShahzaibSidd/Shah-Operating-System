@@ -15,6 +15,7 @@ void paging_init() {
         first_table[i].frame = i;
         first_table[i].present = 1;
         first_table[i].rw = 1;
+        first_table[i].user = 1; // ALLOW USER ACCESS FOR TESTING
         set_bitmap_ind(i);
     }
 
@@ -22,12 +23,14 @@ void paging_init() {
     kernel_directory[0].table = ((uint32_t)first_table >> 12);
     kernel_directory[0].present = 1;
     kernel_directory[0].rw = 1;
+    kernel_directory[0].user = 1; // ALLOW USER ACCESS FOR TESTING
 
     // Higher-half map (0xC0000000 - 0xC03FFFFF)
     // 0xC0000000 >> 22 = 768
     kernel_directory[768].table = ((uint32_t)first_table >> 12);
     kernel_directory[768].present = 1;
     kernel_directory[768].rw = 1;
+    kernel_directory[768].user = 1; // ALLOW USER ACCESS FOR TESTING
 
     // recursive kernel directory
     kernel_directory[1023].table = ((uint32_t)kernel_directory >> 12);
@@ -45,12 +48,11 @@ void paging_init() {
 void page_dir_init(pd_entry_t* pd_virt, uint32_t pd_phys) {
     memset(pd_virt, 0, BYTES_PER_PAGE);
     
-    // Map kernel (Higher Half)
-    // We use the physical address of first_table
-    uint32_t first_table_phys = (uint32_t)first_table - KERNEL_VIRTUAL_BASE;
-    pd_virt[768].table = (first_table_phys >> 12);
-    pd_virt[768].present = 1;
-    pd_virt[768].rw = 1;
+    // Copy kernel mappings from the kernel_directory (index 768 to 1022)
+    // We don't copy the recursive mapping (1023) because the new PD needs its own.
+    for (int i = 768; i < 1023; i++) {
+        pd_virt[i] = kernel_directory[i];
+    }
 
     // Recursive mapping: the last entry points to the page directory itself
     pd_virt[1023].table = (pd_phys >> 12);

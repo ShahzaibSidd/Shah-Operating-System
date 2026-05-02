@@ -26,4 +26,6 @@ typedef struct process {
 } __attribute__((packed)) process_t;
 
 void create_process(uint32_t entry_point);
+void run_process(process_t* proc);
+void switch_to_user_mode(registers_t* regs, uint32_t page_directory);
 

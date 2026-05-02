@@ -4,6 +4,7 @@
 #include "kernel/pmm.h"
 #include "kernel/vmm.h"
 #include "helper/string.h"
+#include "kernel/gdt.h"
 
 process_t* process_head = NULL;
 uint32_t curr_pid = 0;
@@ -63,4 +64,13 @@ void create_process(uint32_t entry_point) {
         }
         curr->next = new_proc;
     }
+}
+
+void run_process(process_t* proc) {
+    // 1. Update TSS kernel stack for this process
+    // When an interrupt occurs while in user mode, the CPU will switch to this stack
+    tss_update_stack_pointer(proc->kernel_stack);
+
+    // 2. Perform the low-level switch
+    switch_to_user_mode(&proc->context, (uint32_t)proc->page_directory);
 }

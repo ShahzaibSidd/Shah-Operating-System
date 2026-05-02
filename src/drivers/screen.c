@@ -78,8 +78,6 @@ void int_to_hex(uint32_t n, char outp[], bool format) {
 
 void screen_init(vga_colour text, vga_colour background) {
     screen.buffer = (uint16_t*) VGA_MEM;
-
-    draw_init_anim();
     
     screen.cursor_x = 0;
     screen.cursor_y = 0;

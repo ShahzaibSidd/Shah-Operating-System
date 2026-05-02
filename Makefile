@@ -42,10 +42,13 @@ bin/os.bin: bin/bootloader.bin bin/kernel.bin
 bin/bootloader.bin: src/boot/bootloader.asm
 	$(NASM) -f bin -I src/ $< -o $@
 
-bin/kernel.bin: build/enter_kernel.o $(OBJ)
+bin/kernel.bin: build/enter_kernel.o build/process_asm.o $(OBJ)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 build/enter_kernel.o: src/kernel/enter_kernel.asm
+	$(NASM) $< -f elf32 -o $@
+
+build/process_asm.o: src/kernel/process_asm.asm
 	$(NASM) $< -f elf32 -o $@
 
 build/%.o: src/*/%.c
