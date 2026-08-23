@@ -12,11 +12,11 @@ void user_mode_function() {
     uint16_t cs;
     __asm__ volatile("mov %%cs, %0" : "=r"(cs));
 
-    // The bottom 2 bits of CS are the CPL (Current Privilege Level)
+    // The bottom 2 bits of CS are the current privilege level
     if ((cs & 0x3) == 3) {
-        // check if we're in Ring 3!
-        // we don't have syscalls, write directly to video memory.
-        // only works temporarily while i still have video memory is mapped with User permissions.
+        // check if we're in Ring 3
+        // don't have syscalls yet, write directly to video memory.
+        // only works temporarily while i still have video memory mapped with user permissions.
         volatile char* video_mem = (volatile char*)0xC00B8000;
         *video_mem = '3';
         *(video_mem + 1) = 0x0F; // White on Black
@@ -31,7 +31,7 @@ extern process_t* process_head;
 
 void main() {
     screen_init(VGA_WHITE, VGA_BLACK);
-    //draw_init_anim()
+    draw_init_anim();
 
     gdt_init();
     idt_init();

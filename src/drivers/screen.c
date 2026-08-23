@@ -151,6 +151,7 @@ void terminal_writehex(uint32_t n, bool format) {
     }
 }
 
+//TODO: fix char undefined behaviour
 void terminal_writestring(char* text) {
     size_t length = strlen(text);
     for (size_t i = 0; i < length; i++) {
@@ -212,4 +213,8 @@ void draw_init_anim() {
     stall(0x05000000);
     draw_welcome_msg(VGA_WHITE, VGA_BLUE, false);
     stall(0x30000000);
+
+    terminal_set_colour(VGA_WHITE, VGA_BLACK);
+    clear_screen();
+
 }
