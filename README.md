@@ -76,7 +76,3 @@ make clean  # Remove build artifacts
 ## Current Status
 
 The kernel currently initializes the screen, GDT, IDT, physical memory manager, and paging, sets up a kernel heap, then creates and switches into a single user-mode (ring 3) process before enabling interrupts and idling. This is an active, in-progress hobby OS project — expect incomplete subsystems (e.g. no syscalls yet, no filesystem).
-
-## License
-
-No license file is currently included in this repository.
