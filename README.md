@@ -4,6 +4,8 @@ A small x86 (i686) operating system built from scratch in C and NASM assembly! I
 
 I tried to avoid as much vibe coding as possible for the implementation of this project, instead using ai to learn how these systems actually work. I think this helped me gain a deeper theoretical knowledge on how these systems work in the real world, and gave me the ability actually implement the code myself!
 
+<img width="800" height="502" alt="os-gif" src="https://github.com/user-attachments/assets/abd5d1d5-0915-4717-9c60-f823d5955cfb" />
+
 ## Features
 
 - **Custom bootloader** (`src/boot/bootloader.asm`) — 16-bit real mode boot sector that enables the A20 line, loads the kernel from disk, retrieves a memory map via BIOS (`get_mmap.asm`), and switches the CPU into protected mode.
