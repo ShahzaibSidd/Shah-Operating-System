@@ -1,6 +1,8 @@
 # Shah Operating System
 
-A small x86 (i686) operating system built from scratch in C and NASM assembly. It boots from a custom real-mode bootloader, transitions through protected mode, and brings up its own memory management, interrupt handling, and process scheduling — no existing kernel or bootloader is used.
+A small x86 (i686) operating system built from scratch in C and NASM assembly! It boots from a custom real-mode bootloader, transitions through protected mode, and brings up its own memory management, interrupt handling, and process scheduling — no existing kernel or bootloader is used.
+
+I tried to avoid as much vibe coding as possible for the implementation of this project, instead using ai to learn how these systems actually work. I think this helped me gain a deeper theoretical knowledge on how these systems work in the real world, and gave me the ability actually implement the code myself!
 
 ## Features
 
